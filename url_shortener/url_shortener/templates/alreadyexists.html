@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>URL Shortener Service</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.5/css/bulma.min.css">
+
+    <script>
+            function enabledisableinput(){
+                
+                var x = document.getElementById('custom_input');
+                
+                if (x.style.display === "none") {
+                  x.style.display = "block";
+                } else {
+                  x.style.display = "none";
+                }
+
+            }
+
+            function checkForm(){
+                var orig_url_text = document.getElementById('original_url');
+
+                if(orig_url_text.value.length==0){
+                    alert('Please input the url to be shortened');
+                    return false;
+                }
+
+                if(!orig_url_text.value.startsWith("http") && !orig_url_text.value.startsWith("https")){
+                    alert('The URL entered is invalid. (is http:// or https:// missing?)');
+                    return false;
+                }
+
+                var checkbox= document.getElementById('custom_checkbox');
+                                
+                if(checkbox.checked){
+                    var custom_text=document.getElementById('custom_short_url');
+                    if(custom_text.value.length==0){
+                        alert('You have chosen to provide custom url but it is empty. Please provide one or uncheck the checkbox');
+                        return false;
+                    } else {
+                        return true;
+                    }
+                } else {
+                    return true;
+                    
+                }
+
+                return true;
+            }
+        </script>
+
+</head>
+<p style="color: red;">The given custom short url already exists. Please choose a different custom URL</p>
+<body>
+    <section class="section">
+        <div class="container">
+            <form method="POST" action="{{ url_for('short.add_link') }}" onsubmit=" return checkForm()">
+                <div class="field">
+                    <label class="label">Original URL</label>
+                    <div class="control">
+                        <input class="input" type="text" name="original_url" id="original_url">
+                    </div>
+
+                </div>
+
+                <div class="field">
+                                                
+                            <input  type="checkbox" id="custom_checkbox" name="custom_checkbox" onclick="enabledisableinput()"> Use custom URL below
+                        
+    
+                </div>
+
+
+                <div class="field" id="custom_input" style="display: none;">
+                        <label class="label">Custom Short URL (6)</label>
+                        <div class="control">
+                            <input class="input" type="text" id="custom_short_url" name="custom_short_url" maxlength="6">
+                        </div>
+    
+                </div>
+
+                <div class="control">
+                    <button type="submit" class="button is-info">Shorten my URL</button>
+                </div>
+
+            </form>
+        </div>
+    </section>
+</body>
+
+</html>
